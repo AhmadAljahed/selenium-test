@@ -22,7 +22,7 @@ public class ATest {
 
     @Test
     public void googleSearchTest() {
-        driver.findElement(By.name("q")).sendKeys("Selenium WebDriver");
+        driver.findElement(By.className("gLFyf")).sendKeys("Selenium WebDriver");
         driver.findElement(By.name("btnK")).submit();
         Assert.assertTrue(driver.getTitle().contains("Selenium WebDriver"));
     }
