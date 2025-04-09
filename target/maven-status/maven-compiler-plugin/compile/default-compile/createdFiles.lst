@@ -1,6 +1,7 @@
 utils/General.class
 pages/InteralNotePage.class
 pages/MirsalHomePage.class
+demo/EmailSender.class
 pages/BasePage.class
 com/selenium/project/Main.class
 pages/CreateInternalElctornicDocument.class
@@ -10,6 +11,7 @@ pages/MirsalLoginPage.class
 pages/IframPage.class
 pages/MersalCreateElctornicDocument.class
 pages/AlertsPage.class
+demo/EmailSender$1.class
 pages/MirsalProfilePage.class
 pages/ExtenralNotePage.class
 utils/Log.class
