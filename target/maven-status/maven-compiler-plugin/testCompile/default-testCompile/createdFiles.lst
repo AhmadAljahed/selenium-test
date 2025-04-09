@@ -9,6 +9,7 @@ AmazonTest.class
 tests/LoginTest.class
 listeners/TestListener.class
 tests/IncomingDoucment.class
+tests/ATest.class
 tests/createEdoucumnet.class
 tests/MercalExternalWorkFlowlTest.class
 utils/ExcelDataProvider.class

@@ -4,11 +4,14 @@ import listeners.TestListener;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.testng.Assert;
-import org.testng.annotations.*;
+import org.testng.annotations.AfterTest;
+import org.testng.annotations.BeforeTest;
+import org.testng.annotations.Listeners;
+import org.testng.annotations.Test;
 import utils.DriverFactory;
 
 @Listeners(TestListener.class)
-public class SampleTest {
+public class ATest {
     private WebDriver driver;
 
     @BeforeTest
