@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE suite SYSTEM "https://testng.org/testng-1.0.dtd">
+<suite name="Failed suite [Surefire suite]" verbose="0">
+  <test thread-count="5" name="Surefire test(failed)" verbose="0">
+    <classes>
+      <class name="AmazonTest">
+        <methods>
+          <include name="searchProduct"/>
+          <include name="setUp"/>
+          <include name="tearDown"/>
+        </methods>
+      </class> <!-- AmazonTest -->
+      <class name="tests.MercalExternalWorkFlowlTest">
+        <methods>
+          <include name="setUp"/>
+          <include name="testLogin"/>
+          <include name="tearDown"/>
+          <include name="testRecverLogin"/>
+          <include name="testOpenNote"/>
+          <include name="CreatExternalNote"/>
+        </methods>
+      </class> <!-- tests.MercalExternalWorkFlowlTest -->
+      <class name="tests.MercalInternalWorkFlowlTest">
+        <methods>
+          <include name="setUp"/>
+          <include name="compleatTaskS1_Test"/>
+          <include name="testLogin"/>
+          <include name="tearDown"/>
+          <include name="testOpenNote"/>
+          <include name="compleatTaskS2_Test"/>
+          <include name="testRecverLogin"/>
+          <include name="CreatInteralNoteTest"/>
+        </methods>
+      </class> <!-- tests.MercalInternalWorkFlowlTest -->
+      <class name="tests.InteralDoucmentTest">
+        <methods>
+          <include name="creatInternalDocumentTest"/>
+          <include name="testLogin"/>
+          <include name="setUp"/>
+          <include name="tearDown"/>
+        </methods>
+      </class> <!-- tests.InteralDoucmentTest -->
+      <class name="tests.LoginTest">
+        <methods>
+          <include name="setup"/>
+          <include name="testLogin"/>
+          <include name="tearDown"/>
+        </methods>
+      </class> <!-- tests.LoginTest -->
+      <class name="tests.IframTest">
+        <methods>
+          <include name="testIfram"/>
+          <include name="setUp"/>
+          <include name="tearDown"/>
+        </methods>
+      </class> <!-- tests.IframTest -->
+      <class name="FacebookSignInTest">
+        <methods>
+          <include name="FluentWait"/>
+          <include name="teardown"/>
+          <include name="setup"/>
+        </methods>
+      </class> <!-- FacebookSignInTest -->
+      <class name="tests.FacebookLoginTest">
+        <methods>
+          <include name="tearDown"/>
+          <include name="testLoginFunctionality"/>
+          <include name="setUp"/>
+        </methods>
+      </class> <!-- tests.FacebookLoginTest -->
+      <class name="tests.AlertsTest">
+        <methods>
+          <include name="setUp"/>
+          <include name="tearDown"/>
+          <include name="testAlert"/>
+        </methods>
+      </class> <!-- tests.AlertsTest -->
+      <class name="tests.SampleTest">
+        <methods>
+          <include name="failedTest"/>
+          <include name="googleSearchTest"/>
+          <include name="setUp"/>
+          <include name="tearDown"/>
+        </methods>
+      </class> <!-- tests.SampleTest -->
+    </classes>
+  </test> <!-- Surefire test(failed) -->
+</suite> <!-- Failed suite [Surefire suite] -->
