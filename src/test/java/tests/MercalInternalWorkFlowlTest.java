@@ -175,10 +175,10 @@ public class MercalInternalWorkFlowlTest extends IncomingBaseTest {
         Thread.sleep(500);
         test.log(Status.INFO, "Switch To the Frame 1");
         driver.switchTo().frame("presentation-iframe");
-        Thread.sleep(500);
+        Thread.sleep(1000);
         test.log(Status.INFO, "Click on Sign Button ");
         mersalTaskPage.AddSignBlockBtn();
-        Thread.sleep(1000);
+        Thread.sleep(2000);
         test.log(Status.INFO, "Switch to default page 1");
         driver.switchTo().defaultContent();
         test.log(Status.INFO, "Scroll To Bottom Of The Page");

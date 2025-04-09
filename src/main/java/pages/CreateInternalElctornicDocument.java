@@ -68,6 +68,7 @@ public class CreateInternalElctornicDocument extends BasePage {
     @FindBy(id = "AddRecieveBtn")
     private WebElement recievedButton;
 
+    WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
 
     public CreateInternalElctornicDocument(WebDriver driver) {
         super(driver);
@@ -80,7 +81,7 @@ public class CreateInternalElctornicDocument extends BasePage {
     public void clickOnCreateEdocument() {
         try {
             //set up wait
-            WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
+
             WebElement eDocument = wait.until(ExpectedConditions.elementToBeClickable(createEdocument));
             eDocument.click();
         } catch (Exception e) {
@@ -92,68 +93,70 @@ public class CreateInternalElctornicDocument extends BasePage {
 
 
     public void selectDocumentType(String type) {
-        selectFiled.click();
+        wait.until(ExpectedConditions.elementToBeClickable(selectFiled)).click();
         Select dropdown = new Select(selectFiled);
         dropdown.selectByValue(type);
     }
 
     public void writeSupjectFiled(String subjectName) {
-        subjectFiled.sendKeys(subjectName);
+        wait.until(ExpectedConditions.elementToBeClickable(subjectFiled)).sendKeys(subjectName);
     }
 
     public void clickOnDirctFrom() {
-        DirectFrom.click();
+        waitAndClick(DirectFrom);
     }
 
     public void clickOnSelectDirect() {
-        selectDirect.click();
+        waitAndClick(selectDirect);
     }
 
     public void clickOnDirctTo() {
-        DirectTo.click();
+        waitAndClick(DirectTo);
     }
 
     public void clickOnSelectDirectTo() {
-        selectDirectTo.click();
+        waitAndClick(selectDirectTo);
     }
 
     public void enterBookNumber(String number) {
-        bookNumber.sendKeys(number);
+        wait.until(ExpectedConditions.elementToBeClickable(bookNumber)).sendKeys(number);
     }
 
     public void enterBookDate(String BookDate) {
-        bookDate.sendKeys(BookDate);
+        wait.until(ExpectedConditions.elementToBeClickable(bookDate)).sendKeys(BookDate);
     }
 
     public void enterBookCatgorayNumber(String bookcatogary) {
-        bookCode.sendKeys(bookcatogary);
+        wait.until(ExpectedConditions.elementToBeClickable(bookCode)).sendKeys(bookcatogary);
     }
 
     public void enterSearchKeyword(String keyword) {
-        searchKeyword.sendKeys(keyword);
+        wait.until(ExpectedConditions.elementToBeClickable(searchKeyword)).sendKeys(keyword);
+
     }
 
 
     public void selectCatgory(String catogray) {
-        attachCatagory.click();
+        waitAndClick(attachCatagory);
         Select dropdown = new Select(attachCatagory);
         dropdown.selectByValue(catogray);
     }
 
     public void enterDescripton(String des) {
-        descrption.sendKeys(des);
+        wait.until(ExpectedConditions.elementToBeClickable(descrption)).sendKeys(des);
+
     }
 
     public void clickTransferButton() {
-        trasferInput.click();
+        waitAndClick(trasferInput);
     }
 
     public void uplaodAttachedFile(String filepath) {
-        attachedFile.sendKeys(filepath);
+        wait.until(ExpectedConditions.elementToBeClickable(attachedFile)).sendKeys(filepath);
     }
 
     public void clickSaveButton() {
-        saveButton.click();
+        waitAndClick(saveButton);
     }
 
     public void scrolldown() {
@@ -162,13 +165,11 @@ public class CreateInternalElctornicDocument extends BasePage {
     }
 
     public void clickConfirmButton() {
-        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
-        wait.until(ExpectedConditions.elementToBeClickable(confirmButton));
-        confirmButton.click();
+        waitAndClick(confirmButton);
     }
 
     public void clickRightSection() {
-        rightSection.click();
+        waitAndClick(rightSection);
     }
 
     public String getActualNotecode() {

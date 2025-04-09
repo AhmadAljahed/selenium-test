@@ -4,6 +4,8 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 
+import static utils.General.waitAndClick;
+
 public class MirsalLogout extends BasePage {
     public MirsalLogout(WebDriver driver) {
         super(driver);
@@ -13,7 +15,7 @@ public class MirsalLogout extends BasePage {
     private WebElement logoutButton;
 
     public void clickLogoutButton() {
-        logoutButton.click();
+        waitAndClick(logoutButton);
     }
 
 }

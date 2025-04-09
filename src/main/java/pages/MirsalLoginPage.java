@@ -4,7 +4,10 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
 import utils.Log;
+
+import java.time.Duration;
 
 public class MirsalLoginPage extends BasePage {
     @FindBy(id = "txtUserName")
@@ -29,12 +32,13 @@ public class MirsalLoginPage extends BasePage {
         super(driver);
     }
 
+
     public static boolean loginUser(WebDriver driver, String username, String password) {
         try {
-            usernameFiled.sendKeys(username);
-            passwordFiled.sendKeys(password);
-            loginButton.click();
-
+            wait.until(ExpectedConditions.elementToBeClickable(usernameFiled)).sendKeys(username);
+            wait.until(ExpectedConditions.elementToBeClickable(passwordFiled)).sendKeys(password);
+            wait.until(ExpectedConditions.elementToBeClickable(loginButton)).click();
+            
             return wait.until(ExpectedConditions.visibilityOf(dashboard)).isDisplayed();
 
         } catch (Exception e) {
