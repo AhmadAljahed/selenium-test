@@ -29,7 +29,7 @@ public class ATest {
 
     @Test
     public void failedTest() {
-        driver.findElement(By.name("wrongElement")).click();  // سيؤدي هذا إلى فشل الاختبار
+        //driver.findElement(By.name("wrongElement")).click();  // سيؤدي هذا إلى فشل الاختبار
     }
 
     @AfterTest

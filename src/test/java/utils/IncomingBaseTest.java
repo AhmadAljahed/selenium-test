@@ -11,6 +11,9 @@ import pages.MirsalHomePage;
 import pages.MirsalLoginPage;
 import pages.RecivedMailPage;
 
+import java.time.Duration;
+import java.util.concurrent.TimeUnit;
+
 public class IncomingBaseTest {
     public WebDriver driver;
 

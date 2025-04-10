@@ -1,7 +1,0 @@
-<suite name="Selenium Tests" paraller="classes" thread-count="1">
-    <test name="parallelTests">
-        <classes>
-            <class name="tests.SampleTest"/>
-        </classes>
-    </test>
-</suite>

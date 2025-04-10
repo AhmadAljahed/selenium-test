@@ -86,7 +86,7 @@ public class InteralNotePage extends BasePage {
 
     public void writeSubject(String noteName) {
 
-        wait.until(ExpectedConditions.elementToBeClickable(subject)).sendKeys(noteName);
+        wait.until(ExpectedConditions.visibilityOf(subject)).sendKeys(noteName);
     }
 
     public void selectAuthorized() {
@@ -96,8 +96,7 @@ public class InteralNotePage extends BasePage {
 
     public void loadWordFile() {
 
-        wait.until(ExpectedConditions.elementToBeClickable(wordfile))
-                .click();
+        waitAndClick(wordfile);
     }
 
     public void clickSaveButton() {
@@ -140,6 +139,7 @@ public class InteralNotePage extends BasePage {
     }
 
     public void confirmNotify() {
+
         wait.until(ExpectedConditions.visibilityOf(confirmNotify)).click();
     }
 

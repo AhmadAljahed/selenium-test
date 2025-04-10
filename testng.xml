@@ -1,7 +1,8 @@
-<suite name="Selenium Tests" paraller="classes" thread-count="1">
-    <test name="tests">
+<?xml version="1.0" encoding="UTF-8"?>
+<suite name="TestSuite">
+    <test name="Test1">
         <classes>
-            <class name="tests.SampleTest"/>
+            <class name="tests.ATest"/>
         </classes>
     </test>
 </suite>

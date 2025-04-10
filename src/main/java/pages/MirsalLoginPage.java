@@ -25,7 +25,7 @@ public class MirsalLoginPage extends BasePage {
     @FindBy(id = "loginLang")
     private WebElement languageButton;
 
-    @FindBy(id = "panel-56")
+    @FindBy(id = "ReceivedInboxCount")
     static WebElement dashboard;
 
     public MirsalLoginPage(WebDriver driver) {
@@ -38,7 +38,7 @@ public class MirsalLoginPage extends BasePage {
             wait.until(ExpectedConditions.elementToBeClickable(usernameFiled)).sendKeys(username);
             wait.until(ExpectedConditions.elementToBeClickable(passwordFiled)).sendKeys(password);
             wait.until(ExpectedConditions.elementToBeClickable(loginButton)).click();
-            
+           
             return wait.until(ExpectedConditions.visibilityOf(dashboard)).isDisplayed();
 
         } catch (Exception e) {

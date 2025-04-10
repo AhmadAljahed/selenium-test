@@ -18,7 +18,7 @@ public class MirsalHomePage extends BasePage {
     @FindBy(id = "PersonalProfileLink")
     private WebElement profileLink;
 
-    @FindBy(xpath = "//a[@data-filter-tags='انشاء وفهرسه الكتب']")
+    @FindBy(linkText = "إنشاء وفهرسة الكتب")
     private WebElement createbook;
 
     @FindBy(xpath = "//*[@id='js-nav-menu']/li[2]/ul/li[3]/a/span")
@@ -42,12 +42,16 @@ public class MirsalHomePage extends BasePage {
     }
 
     public void clickOnCreateBook() {
-
-        wait.until(ExpectedConditions.visibilityOf(createbook)).click();
+        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
+        WebElement element = wait.until(ExpectedConditions.visibilityOfElementLocated(
+                By.cssSelector("a[data-filter-tags='انشاء وفهرسه الكتب']")
+        ));
+        element.click();
 
     }
 
     public void clickOnCreateInteralNote() {
+
 
         wait.until(ExpectedConditions.elementToBeClickable(createInteralNote)).click();
     }
