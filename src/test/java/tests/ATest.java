@@ -3,7 +3,6 @@ package tests;
 import listeners.TestListener;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
-import org.testng.Assert;
 import org.testng.annotations.AfterTest;
 import org.testng.annotations.BeforeTest;
 import org.testng.annotations.Listeners;
@@ -29,7 +28,7 @@ public class ATest {
 
     @Test
     public void failedTest() {
-        //driver.findElement(By.name("wrongElement")).click();  // سيؤدي هذا إلى فشل الاختبار
+        driver.findElement(By.name("wrongElement")).click();  // سيؤدي هذا إلى فشل الاختبار
     }
 
     @AfterTest
