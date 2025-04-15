@@ -3,18 +3,13 @@ package tests;
 import com.aventstack.extentreports.Status;
 import listeners.TestListener;
 import org.openqa.selenium.By;
-import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.testng.Assert;
-import org.testng.annotations.AfterTest;
-import org.testng.annotations.BeforeTest;
 import org.testng.annotations.Listeners;
 import org.testng.annotations.Test;
 import pages.CreateInternalElctornicDocument;
 import pages.MirsalHomePage;
-import pages.MirsalLoginPage;
 import pages.RecivedMailPage;
-import utils.DriverFactory;
 import utils.ExtentReportManager;
 import utils.IncomingBaseTest;
 import utils.Log;
@@ -31,7 +26,7 @@ public class IncomingDoucment extends IncomingBaseTest {
     @Test(priority = 1)
     public void testLogin() throws InterruptedException, IOException {
         Log.info("Starting login  valid test...");
-        test = ExtentReportManager.createTest("Mercal Login Test");
+        test = extent.createTest("Mercal Login Test", "Verify successful login with valid " + "credentials");
         test.info("enter and verify user information");
         loginUser(driver, "seq1", "Ebla1234");
     }

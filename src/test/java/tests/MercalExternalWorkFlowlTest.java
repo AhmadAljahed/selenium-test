@@ -3,18 +3,12 @@ package tests;
 import com.aventstack.extentreports.Status;
 import org.openqa.selenium.*;
 import org.openqa.selenium.interactions.Actions;
-import org.openqa.selenium.support.FindBy;
 import org.testng.Assert;
-import org.testng.annotations.AfterTest;
-import org.testng.annotations.BeforeTest;
 import org.testng.annotations.Test;
 import pages.*;
-import utils.DriverFactory;
 import utils.ExtentReportManager;
 import utils.IncomingBaseTest;
 import utils.Log;
-
-import java.time.Duration;
 
 import static pages.MirsalLoginPage.loginUser;
 import static pages.TaskPage.scrollToBottom;
@@ -28,7 +22,7 @@ public class MercalExternalWorkFlowlTest extends IncomingBaseTest {
     public void testLogin() {
         Log.info("Starting valid login test...");
 
-        test = ExtentReportManager.createTest("Mercal Login Test");
+        test = extent.createTest("Mercal Login Test", "Verify successful login with valid " + "credentials");
         test.info("Entering and verifying user credentials");
 
         try {

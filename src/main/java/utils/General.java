@@ -1,18 +1,22 @@
 package utils;
 
+import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import pages.BasePage;
 
 import java.time.Duration;
+import java.util.List;
 
 import static pages.BasePage.wait;
 
 
 public class General {
+
     public static void waitAndClick(WebElement w) {
         wait.until(ExpectedConditions.elementToBeClickable(w)).click();
     }
@@ -35,4 +39,6 @@ public class General {
         // Execute JavaScript to scroll to the top (0, 0)
         js.executeScript("window.scrollTo(0, 0);");
     }
+
+
 }

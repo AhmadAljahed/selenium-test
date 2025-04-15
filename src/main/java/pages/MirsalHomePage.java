@@ -37,17 +37,15 @@ public class MirsalHomePage extends BasePage {
     @FindBy(xpath = "//span[text()='اصدار كتاب خارجي']")
     private WebElement externalBook;
 
+    @FindBy(xpath = "//div[@data-progress-test]")
+    private WebElement dataProgress;
+
     public MirsalHomePage(WebDriver driver) {
         super(driver);
     }
 
     public void clickOnCreateBook() {
-        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
-        WebElement element = wait.until(ExpectedConditions.visibilityOfElementLocated(
-                By.cssSelector("a[data-filter-tags='انشاء وفهرسه الكتب']")
-        ));
-        element.click();
-
+        wait.until(ExpectedConditions.elementToBeClickable(createbook)).click();
     }
 
     public void clickOnCreateInteralNote() {
@@ -73,7 +71,6 @@ public class MirsalHomePage extends BasePage {
 
 
     public void openIncomingPage() {
-        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
         wait.until(ExpectedConditions.elementToBeClickable(incoming));
         incoming.click();
 

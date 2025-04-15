@@ -118,10 +118,13 @@ public class TaskPage extends BasePage {
     public void executeTask() {
         wait.until(ExpectedConditions.elementToBeClickable(excuteTaskBtn));
         excuteTaskBtn.click();
+
+
     }
 
     public void confirmButton1() {
         wait.until(ExpectedConditions.elementToBeClickable(confirmButton1)).click();
+
     }
 
 

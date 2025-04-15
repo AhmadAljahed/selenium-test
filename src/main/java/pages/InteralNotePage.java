@@ -9,6 +9,8 @@ import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.w3c.dom.html.HTMLInputElement;
 
+import java.util.List;
+
 import static utils.General.waitAndClick;
 
 public class InteralNotePage extends BasePage {
@@ -84,9 +86,8 @@ public class InteralNotePage extends BasePage {
         super(driver);
     }
 
-    public void writeSubject(String noteName) {
-
-        wait.until(ExpectedConditions.visibilityOf(subject)).sendKeys(noteName);
+    public void writeSubject() {
+        subject.sendKeys("test 1");
     }
 
     public void selectAuthorized() {
@@ -97,24 +98,24 @@ public class InteralNotePage extends BasePage {
     public void loadWordFile() {
 
         waitAndClick(wordfile);
+
     }
 
     public void clickSaveButton() {
         wait.until(ExpectedConditions.elementToBeClickable(saveButton)).click();
+
     }
 
     public void
     clickOnExecuteButton0() {
-        // wait.until(ExpectedConditions.invisibilityOfElementLocated(By.id("PrepareDocumentBox")));
-        // wait.until(ExpectedConditions.elementToBeClickable(By.id("ExcuteTaskBtn"))).click();
-        excuteButton0.click();
-
-
+        waitAndClick(excuteButton0);
     }
 
     public void confirmeSave() {
         wait.until(ExpectedConditions.elementToBeClickable(confairmButton))
                 .click();
+
+
     }
 
 
@@ -140,7 +141,7 @@ public class InteralNotePage extends BasePage {
 
     public void confirmNotify() {
 
-        wait.until(ExpectedConditions.visibilityOf(confirmNotify)).click();
+        wait.until(ExpectedConditions.elementToBeClickable(confirmNotify)).click();
     }
 
     public void selectReason() {
@@ -200,4 +201,6 @@ public class InteralNotePage extends BasePage {
 
         waitAndClick(personInput);
     }
+
+
 }

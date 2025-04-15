@@ -3,7 +3,6 @@ package utils;
 import com.aventstack.extentreports.ExtentReports;
 import com.aventstack.extentreports.ExtentTest;
 import com.aventstack.extentreports.reporter.ExtentSparkReporter;
-import org.apache.commons.lang3.ObjectUtils;
 import org.openqa.selenium.OutputType;
 import org.openqa.selenium.TakesScreenshot;
 import org.openqa.selenium.WebDriver;
@@ -32,21 +31,33 @@ public class ExtentReportManager {
         return extent;
     }
 
-    public static ExtentTest createTest(String testName) {
-        test = getReportInstance().createTest(testName);
+    public ExtentTest createTest(String testName, String details) {
+        test = extent.createTest(testName, details);
         return test;
+
     }
 
 
     public static String captureScreenshot(WebDriver driver, String testName) {
         try {
+            // Define the screenshot directory and file path
+            String screenshotDir = "screenshots";
+            String path = screenshotDir + "/" + testName + ".png";
 
+            // Create the screenshots directory if it doesn't exist
+            File directory = new File(screenshotDir);
+            if (!directory.exists()) {
+                directory.mkdirs(); // Creates directory and any necessary parent directories
+            }
+
+            // Capture the screenshot
             File src = ((TakesScreenshot) driver).getScreenshotAs(OutputType.FILE);
-            String path = "screenshots/" + testName + ".png";
             FileHandler.copy(src, new File(path));
+
+            // Return the relative path for reporting
             return "/" + path;
         } catch (Exception e) {
-            System.out.println("Screenshot capture failed: " + e.getMessage());
+            System.err.println("Screenshot capture failed: " + e.getMessage());
             return null;
         }
     }

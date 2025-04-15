@@ -1,23 +1,19 @@
 package tests;
 
+import com.aventstack.extentreports.ExtentTest;
 import com.aventstack.extentreports.Status;
-import org.apache.poi.ss.formula.functions.T;
 import org.openqa.selenium.*;
 import org.openqa.selenium.interactions.Actions;
 import org.testng.Assert;
 import org.testng.annotations.*;
 import pages.*;
-import utils.DriverFactory;
-import utils.ExtentReportManager;
-import utils.IncomingBaseTest;
-import utils.Log;
+import utils.*;
 
-import java.time.Duration;
-
+import static pages.BasePage.waitForLoadPage;
 import static pages.MirsalLoginPage.loginUser;
 import static pages.TaskPage.scrollToBottom;
-import static utils.General.scrollDownY;
-import static utils.General.scrollToTop;
+import static utils.ExtentReportManager.captureScreenshot;
+import static utils.General.*;
 
 public class MercalInternalWorkFlowlTest extends IncomingBaseTest {
     private InteralNotePage interalNotePage;
@@ -26,25 +22,41 @@ public class MercalInternalWorkFlowlTest extends IncomingBaseTest {
 
 
     @Test(priority = 1)
-    public void testLogin() {
-        Log.info("Starting valid login test...");
-
-        test = ExtentReportManager.createTest("Mercal Login Test");
-        test.info("Entering and verifying user credentials");
+    public void verifySuccessfulLoginWithValidCredentials() {
+        Log.info("Starting login test with valid credentials...");
+        test = extent.createTest("Verify Successful Login", "Verify successful login with valid " +
+                "credentials");
+        // Perform login with configurable credentials
+        String username1 = ConfigReader.getProperty("username", "");
+        String password = ConfigReader.getProperty("password", "");
 
         try {
-            // Perform login
-            boolean isLoggedIn = loginUser(driver, "seq2", "Ebla1234");
-            // Assertion to ensure login success
-            Assert.assertTrue(isLoggedIn, "Login failed with valid credentials");
+            // Log test step
+            test.log(Status.INFO, "Entering user credentials: " + username1);
+            boolean isLoggedIn = loginUser(driver, username1, password);
+            // Validate input fields and login outcome
+            if (username1.isEmpty() || password.isEmpty()) {
+                String errorMessage = username1.isEmpty() ? "Username field is empty" : "Password field is empty";
+                test.fail(errorMessage);
+                Assert.fail(errorMessage);
+            }
 
-            test.pass("Login was successful");
-            Log.info("Login test passed.");
+            if (isLoggedIn) {
+                test.pass("Login successful for user: " + username1);
+                Log.info("Login successful for user: " + username1);
+            } else {
+                test.fail("Login failed incorrect username or password ");
+                Assert.fail("Login failed Incorrect username or password: ");
+            }
 
         } catch (Exception e) {
-            test.fail("Login test failed: " + e.getMessage());
-            Log.error("Exception during login test: ", e);
-            Assert.fail("Exception during login test: " + e.getMessage());
+            String errorMessage = "Test failed due to exception: " + e.getMessage();
+            test.fail(errorMessage);
+            captureScreenshot(driver, "login_exception");
+            Log.error("Login test failed with exception: ", e);
+            Assert.fail(errorMessage);
+        } finally {
+            test.log(Status.INFO, "Login test execution completed");
         }
     }
 
@@ -54,13 +66,11 @@ public class MercalInternalWorkFlowlTest extends IncomingBaseTest {
         test = extent.createTest("Open Internal Document Page Test");
         test.log(Status.INFO, "Get Home page ");
         mirsalHomePage = new MirsalHomePage(driver);
-        Thread.sleep(2000);
         test.log(Status.INFO, "Click on create book link");
+        waitForLoadPage();
         mirsalHomePage.clickOnCreateBook();
-        Thread.sleep(2000);
         test.log(Status.INFO, "Click on Create Internal Document");
         mirsalHomePage.clickOnCreateInteralNote();
-        Thread.sleep(1000);
         test.log(Status.PASS, "Internal document page opened successfully");
     }
 
@@ -71,8 +81,9 @@ public class MercalInternalWorkFlowlTest extends IncomingBaseTest {
         interalNotePage = new InteralNotePage(driver);
         //
         test.log(Status.INFO, "Enter Internal Document Name");
-        interalNotePage.writeSubject("internal Note 38");
-        //Thread.sleep(1000);
+        Thread.sleep(1000);
+        interalNotePage.writeSubject();
+        Thread.sleep(1000);
         test.log(Status.INFO, "Chose The Reason For The Internal Document");
         interalNotePage.selectReason();
         //Thread.sleep(2000);
@@ -88,7 +99,7 @@ public class MercalInternalWorkFlowlTest extends IncomingBaseTest {
         Thread.sleep(1000);
         test.log(Status.INFO, "Click on Load File Word Button");
         interalNotePage.loadWordFile();
-        Thread.sleep(2000);
+        waitForLoadPage();
         test.log(Status.INFO, "Switch to Write in The Word File");
         driver.switchTo().frame("Template-iframe");
         test.log(Status.INFO, "Click On Arrow_Down Three Time");
@@ -117,16 +128,17 @@ public class MercalInternalWorkFlowlTest extends IncomingBaseTest {
         //Thread.sleep(500);
         //interalNotePage.getRegister();
         //interalNotePage.clickCloseSearchBox();
-        Thread.sleep(6000);
+        waitForLoadPage();
         test.log(Status.INFO, "Scroll To The Bottom Of The Page");
         scrollToBottom(driver);
         Thread.sleep(1000);
         test.log(Status.INFO, "Click On Execute Button ");
         interalNotePage.clickOnExecuteButton0();
-        Thread.sleep(2000);
+        waitForLoadPage();
+        //Thread.sleep(2000);
         test.log(Status.INFO, "Click On Confirm Execute Button ");
         interalNotePage.confirmNotify();
-        Thread.sleep(2000);
+        //Thread.sleep(2000);
         test.log(Status.PASS, "Create Internal Document successfully");
     }
 
@@ -135,16 +147,11 @@ public class MercalInternalWorkFlowlTest extends IncomingBaseTest {
         test = extent.createTest("Login To Internal Manager Account Test");
         test.log(Status.INFO, "Click On Profile Page");
         mirsalHomePage.clickOnProfileimage();
-        Thread.sleep(1000);
         mirsalLogout = new MirsalLogout(driver);
         test.log(Status.INFO, "Click On Logout Button");
         mirsalLogout.clickLogoutButton();
-        Thread.sleep(500);
-        // mirsalLoginTest.changLanguages();
         test.log(Status.INFO, "Enter Internal Manager UserName And Password");
         loginUser(driver, "seq1", "Ebla1234");
-        Thread.sleep(2000);
-
         test.log(Status.PASS, "Login To Internal Manager Account successfully");
 
     }
@@ -153,37 +160,30 @@ public class MercalInternalWorkFlowlTest extends IncomingBaseTest {
     public void compleatTaskS1_Test() throws InterruptedException {
         test = extent.createTest("Complete Task From Internal Manager Test");
         mersalTaskPage = new TaskPage(driver);
-        Thread.sleep(2000);
-        try {
-            Alert alert = driver.switchTo().alert();
-            System.out.println("Alert text: " + alert.getText());
-            alert.accept();
-        } catch (NoAlertPresentException e) {
-            System.out.println("No alert found.");
-        }
         test.log(Status.INFO, "select Received Document");
+        waitForLoadPage();
         mersalTaskPage.selectRecivedDocument();
         mersalTaskPage.selectAddFolder();
         mersalTaskPage.selectInputDocument();
         test.log(Status.INFO, "Click On Complete Button");
         mersalTaskPage.clickOnCompletButton();
-        Thread.sleep(4000);
+        waitForLoadPage();
         test.log(Status.INFO, "Click On Approved Button");
         mersalTaskPage.clickOnApprovrelButton();
         test.log(Status.INFO, "Scroll To Bottom Of The Page");
         scrollToBottom(driver);
-        Thread.sleep(500);
+        Thread.sleep(200);
         test.log(Status.INFO, "Switch To the Frame 1");
         driver.switchTo().frame("presentation-iframe");
-        Thread.sleep(1000);
+        Thread.sleep(200);
         test.log(Status.INFO, "Click on Sign Button ");
         mersalTaskPage.AddSignBlockBtn();
-        Thread.sleep(2000);
+        waitForLoadPage();
         test.log(Status.INFO, "Switch to default page 1");
         driver.switchTo().defaultContent();
         test.log(Status.INFO, "Scroll To Bottom Of The Page");
         scrollToBottom(driver);
-        Thread.sleep(1000);
+        Thread.sleep(750);
         test.log(Status.INFO, "Switch To the Frame 2");
         driver.switchTo().frame("presentation-iframe");
         test.log(Status.INFO, "Drag Sing To the Bottom");
@@ -192,25 +192,26 @@ public class MercalInternalWorkFlowlTest extends IncomingBaseTest {
         driver.switchTo().defaultContent();
         test.log(Status.INFO, "Scroll To The Top Of The Page");
         scrollToTop(driver);
-        Thread.sleep(1000);
+        Thread.sleep(700);
         test.log(Status.INFO, "Switch To the Frame 3");
         driver.switchTo().frame("presentation-iframe");
+        Thread.sleep(700);
         test.log(Status.INFO, "Click on save Sign Button");
         mersalTaskPage.savaSign();
         test.log(Status.INFO, "Click on Confirm save Sign Button");
         mersalTaskPage.confirmButton1();
         test.log(Status.INFO, "Switch to default page 3");
         driver.switchTo().defaultContent();
-        Thread.sleep(1000);
+        Thread.sleep(700);
         test.log(Status.INFO, "Scroll To Bottom Of The Page");
         scrollToBottom(driver);
-        Thread.sleep(1000);
+        Thread.sleep(700);
         test.log(Status.INFO, "Click On execute Button");
         mersalTaskPage.executeTask();
-        Thread.sleep(3000);
+        waitForLoadPage();
         test.log(Status.INFO, "Click On Confirm Execute Button");
         mersalTaskPage.confirmButton1();
-        Thread.sleep(1000);
+        //waitForLoadPage();
         test.log(Status.PASS, "Complete Task From Internal Manager successfully");
 
     }
@@ -218,28 +219,25 @@ public class MercalInternalWorkFlowlTest extends IncomingBaseTest {
     @Test(priority = 6, dependsOnMethods = "compleatTaskS1_Test")
     public void compleatTaskS2_Test() throws InterruptedException {
         test = extent.createTest("Complete Task From General Manager Test");
-        Thread.sleep(500);
         test.log(Status.INFO, "Click On Profile Page 2");
+        waitForLoadPage();
         mirsalHomePage.clickOnProfileimage();
-        Thread.sleep(1000);
+        waitForLoadPage();
         test.log(Status.INFO, "Click On Logout Button 2");
         mirsalLogout.clickLogoutButton();
-        Thread.sleep(500);
         test.log(Status.INFO, "Enter General Manager UserName And Password");
         loginUser(driver, "seq2", "Ebla1234");
-        Thread.sleep(2000);
         mirsalHomePage = new MirsalHomePage(driver);
-        Thread.sleep(2000);
         test.log(Status.INFO, "Open Incoming Page");
+        waitForLoadPage();
         mirsalHomePage.openIncomingPage();
         mersalTaskPage = new TaskPage(driver);
-        Thread.sleep(2000);
+        waitForLoadPage();
         test.log(Status.INFO, "select Input Document");
         mersalTaskPage.selectInputDocument();
-        Thread.sleep(1000);
         test.log(Status.INFO, "click On Complet Button");
         mersalTaskPage.clickOnCompletButton();
-        Thread.sleep(2000);
+        waitForLoadPage();
         test.log(Status.INFO, "Enter Note..");
         driver.findElement(By.className("swal2-textarea")).sendKeys("done");
         test.log(Status.INFO, "Confirm Complete Task ");

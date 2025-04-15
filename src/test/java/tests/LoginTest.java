@@ -14,7 +14,7 @@ public class LoginTest extends BaseTest {
     @Test
     public void loginTest() throws InterruptedException {
         Log.info("Starting login  valid test...");
-        test = ExtentReportManager.createTest("Login Test");
+        test = extent.createTest("Login Test", "Verify successful login with valid " + "credentials");
         Log.info("Navigate to Login Page");
         loginPage = new LoginPage(driver);
         Log.info("Entere credentails and click Login");
