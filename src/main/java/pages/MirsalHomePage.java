@@ -1,6 +1,7 @@
 package pages;
 
 import org.openqa.selenium.By;
+import org.openqa.selenium.TimeoutException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
@@ -23,6 +24,7 @@ public class MirsalHomePage extends BasePage {
 
     @FindBy(xpath = "//*[@id='js-nav-menu']/li[2]/ul/li[3]/a/span")
     private WebElement createInteralNote;
+    private final By internalMemoPageHeader = By.id("ViewModeContent"); // Adjust locator
     @FindBy(xpath = "//a[@appsid='121']")
     private WebElement recivedMailMenu;
 
@@ -82,5 +84,13 @@ public class MirsalHomePage extends BasePage {
 
     public void openExternalBook() {
         externalBook.click();
+    }
+
+    public boolean isInternalMemoPageDisplayed() {
+        try {
+            return wait.until(ExpectedConditions.visibilityOfElementLocated(internalMemoPageHeader)).isDisplayed();
+        } catch (TimeoutException e) {
+            return false;
+        }
     }
 }

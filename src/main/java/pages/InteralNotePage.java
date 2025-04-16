@@ -14,7 +14,6 @@ import java.util.List;
 import static utils.General.waitAndClick;
 
 public class InteralNotePage extends BasePage {
-    WebDriver driver;
 
     @FindBy(id = "ViewContentSubject")
     private WebElement subject;
@@ -91,7 +90,6 @@ public class InteralNotePage extends BasePage {
     }
 
     public void selectAuthorized() {
-
         wait.until(ExpectedConditions.elementToBeClickable(authorized)).click();
     }
 

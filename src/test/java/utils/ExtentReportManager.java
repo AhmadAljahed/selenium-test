@@ -31,7 +31,7 @@ public class ExtentReportManager {
         return extent;
     }
 
-    public ExtentTest createTest(String testName, String details) {
+    public static ExtentTest createTest(String testName, String details) {
         test = extent.createTest(testName, details);
         return test;
 

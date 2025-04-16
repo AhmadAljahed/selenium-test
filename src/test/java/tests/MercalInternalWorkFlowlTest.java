@@ -1,6 +1,5 @@
 package tests;
 
-import com.aventstack.extentreports.ExtentTest;
 import com.aventstack.extentreports.Status;
 import org.openqa.selenium.*;
 import org.openqa.selenium.interactions.Actions;
@@ -24,10 +23,10 @@ public class MercalInternalWorkFlowlTest extends IncomingBaseTest {
     @Test(priority = 1)
     public void verifySuccessfulLoginWithValidCredentials() {
         Log.info("Starting login test with valid credentials...");
-        test = extent.createTest("Verify Successful Login", "Verify successful login with valid " +
-                "credentials");
+        test = ExtentReportManager.createTest("Verify Successful Login",
+                "Verifies that a user can log in successfully with valid credentials");
         // Perform login with configurable credentials
-        String username1 = ConfigReader.getProperty("username", "");
+        String username1 = ConfigReader.getProperty("username1", "");
         String password = ConfigReader.getProperty("password", "");
 
         try {
@@ -61,25 +60,58 @@ public class MercalInternalWorkFlowlTest extends IncomingBaseTest {
     }
 
 
-    @Test(priority = 2, dependsOnMethods = "testLogin")
-    public void testOpenNote() throws InterruptedException {
-        test = extent.createTest("Open Internal Document Page Test");
-        test.log(Status.INFO, "Get Home page ");
-        mirsalHomePage = new MirsalHomePage(driver);
-        test.log(Status.INFO, "Click on create book link");
-        waitForLoadPage();
-        mirsalHomePage.clickOnCreateBook();
-        test.log(Status.INFO, "Click on Create Internal Document");
-        mirsalHomePage.clickOnCreateInteralNote();
-        test.log(Status.PASS, "Internal document page opened successfully");
+    @Test(priority = 2, dependsOnMethods = "verifySuccessfulLoginWithValidCredentials")
+    public void verifyOpenInternalMemoCreationPage() {
+        Log.info("Starting test to verify opening Internal Memo Creation Page...");
+        test = ExtentReportManager.createTest("Verify Internal Memo Creation Page Access",
+                "Verifies that a user can successfully open the Internal Memo Creation Page");
+
+        try {
+            // Initialize page object
+            test.log(Status.INFO, "Navigating to Home Page");
+            MirsalHomePage mirsalHomePage = new MirsalHomePage(driver);
+
+            // Wait for page to load
+            test.log(Status.INFO, "Waiting for Home Page to load");
+            waitForLoadPage();
+
+            // Perform actions to open Internal Memo Creation Page
+            test.log(Status.INFO, "Clicking on Create and Index Books dropdown");
+            mirsalHomePage.clickOnCreateBook();
+
+            test.log(Status.INFO, "Clicking on Create Internal Memo Link");
+            mirsalHomePage.clickOnCreateInteralNote();
+
+            // Verify the Internal Memo Creation Page is opened
+            test.log(Status.INFO, "Verifying Internal Memo Creation Page is displayed");
+            boolean isPageOpened = mirsalHomePage.isInternalMemoPageDisplayed();
+
+            if (isPageOpened) {
+                test.pass("Internal Memo Creation Page opened successfully");
+                Log.info("Internal Memo Creation Page opened successfully");
+            } else {
+                test.fail("Failed to open Internal Memo Creation Page");
+                captureScreenshot(driver, "internal_memo_page_failure");
+                Assert.fail("Internal Memo Creation Page was not displayed");
+            }
+
+        } catch (Exception e) {
+            String errorMessage = "Test failed due to exception: " + e.getMessage();
+            test.fail(errorMessage);
+            captureScreenshot(driver, "internal_memo_page_exception");
+            Log.error("Test failed with exception: ", e);
+            Assert.fail(errorMessage);
+        } finally {
+            test.log(Status.INFO, "Test execution for Internal Memo Creation Page completed");
+        }
     }
 
-    @Test(priority = 3, dependsOnMethods = "testOpenNote")
-    public void CreatInteralNoteTest() throws InterruptedException {
-        test = extent.createTest("Create Internal Document Test");
-        test.log(Status.INFO, "Get Internal Document page class Instance");
+    @Test(priority = 3, dependsOnMethods = "verifyOpenInternalMemoCreationPage")
+    public void verifyCreateInternalMemo() throws InterruptedException {
+        test = ExtentReportManager.createTest("Verify Create Internal Memo ", "Verify that user can create internal " +
+                "memo ");
+        test.log(Status.INFO, "Get Internal Memo page class Instance");
         interalNotePage = new InteralNotePage(driver);
-        //
         test.log(Status.INFO, "Enter Internal Document Name");
         Thread.sleep(1000);
         interalNotePage.writeSubject();
@@ -142,7 +174,7 @@ public class MercalInternalWorkFlowlTest extends IncomingBaseTest {
         test.log(Status.PASS, "Create Internal Document successfully");
     }
 
-    @Test(priority = 4, dependsOnMethods = "CreatInteralNoteTest")
+    @Test(priority = 4, dependsOnMethods = "verifyCreateInternalMemo")
     public void testRecverLogin() throws InterruptedException {
         test = extent.createTest("Login To Internal Manager Account Test");
         test.log(Status.INFO, "Click On Profile Page");
