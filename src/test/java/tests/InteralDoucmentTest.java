@@ -36,7 +36,7 @@ public class InteralDoucmentTest {
 
     @Test(priority = 1)
     public void testLogin() {
-        mirsalLoginTest.loginUser(driver, "seq1", "Ebla1234");
+        mirsalLoginTest.loginUser("seq1", "Ebla1234");
     }
 
     @Test(priority = 2, dependsOnMethods = "testLogin")

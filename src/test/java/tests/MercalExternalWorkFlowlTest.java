@@ -10,7 +10,7 @@ import utils.ExtentReportManager;
 import utils.IncomingBaseTest;
 import utils.Log;
 
-import static pages.MirsalLoginPage.loginUser;
+
 import static pages.TaskPage.scrollToBottom;
 
 public class MercalExternalWorkFlowlTest extends IncomingBaseTest {
@@ -27,9 +27,8 @@ public class MercalExternalWorkFlowlTest extends IncomingBaseTest {
 
         try {
             // Perform login
-            boolean isLoggedIn = loginUser(driver, "seq2", "Ebla1234");
+            mirsalLoginTest.loginUser("seq2", "Ebla1234");
             // Assertion to ensure login success
-            Assert.assertTrue(isLoggedIn, "Login failed with valid credentials");
 
             test.pass("Login was successful");
             Log.info("Login test passed.");

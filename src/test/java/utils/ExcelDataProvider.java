@@ -4,9 +4,13 @@ import org.testng.annotations.DataProvider;
 
 public class ExcelDataProvider {
 
-    @DataProvider(name = "loginData")
-    public Object[][] getExcelData() {
-        String filePath = "src/test/resources/TestData.xlsx"; // Excel file path
-        return ExcelUtils.readExcelData(filePath, "LoginData"); // Sheet name
+
+    @DataProvider(name = "validLoginCredentials")
+    public Object[][] validLoginCredentials() {
+        return new Object[][]{
+                {ConfigReader.getProperty("username1", ""), ConfigReader.getProperty("password", "")},
+                {ConfigReader.getProperty("username2", ""), ConfigReader.getProperty("password", "")},
+                // Add more credentials if needed
+        };
     }
 }

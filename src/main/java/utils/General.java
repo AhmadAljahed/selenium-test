@@ -17,6 +17,7 @@ import static pages.BasePage.wait;
 
 public class General {
 
+
     public static void waitAndClick(WebElement w) {
         wait.until(ExpectedConditions.elementToBeClickable(w)).click();
     }

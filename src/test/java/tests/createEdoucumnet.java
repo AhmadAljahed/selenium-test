@@ -44,7 +44,7 @@ public class createEdoucumnet {
 
     @Test(priority = 1)
     public void testLogin() throws InterruptedException, IOException {
-        mirsalLoginTest.loginUser(driver, "seq2", "Ebla1234");
+        mirsalLoginTest.loginUser("seq2", "Ebla1234");
         driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(10));
     }
 

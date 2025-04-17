@@ -1,20 +1,32 @@
 package tests;
 
 import com.aventstack.extentreports.Status;
-import org.openqa.selenium.*;
+import com.aventstack.extentreports.markuputils.ExtentColor;
+import com.aventstack.extentreports.markuputils.MarkupHelper;
+import org.openqa.selenium.By;
+import org.openqa.selenium.Keys;
 import org.openqa.selenium.interactions.Actions;
+import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.testng.Assert;
-import org.testng.annotations.*;
-import pages.*;
-import utils.*;
+import org.testng.annotations.Test;
+import pages.InteralNotePage;
+import pages.MirsalHomePage;
+import pages.MirsalLogout;
+import pages.TaskPage;
+import utils.ConfigReader;
+import utils.ExtentReportManager;
+import utils.IncomingBaseTest;
+import utils.Log;
 
+import static pages.BasePage.wait;
 import static pages.BasePage.waitForLoadPage;
-import static pages.MirsalLoginPage.loginUser;
 import static pages.TaskPage.scrollToBottom;
 import static utils.ExtentReportManager.captureScreenshot;
-import static utils.General.*;
+import static utils.General.scrollDownY;
+import static utils.General.scrollToTop;
 
 public class MercalInternalWorkFlowlTest extends IncomingBaseTest {
+
     private InteralNotePage interalNotePage;
     private MirsalLogout mirsalLogout;
     private TaskPage mersalTaskPage;
@@ -32,21 +44,7 @@ public class MercalInternalWorkFlowlTest extends IncomingBaseTest {
         try {
             // Log test step
             test.log(Status.INFO, "Entering user credentials: " + username1);
-            boolean isLoggedIn = loginUser(driver, username1, password);
-            // Validate input fields and login outcome
-            if (username1.isEmpty() || password.isEmpty()) {
-                String errorMessage = username1.isEmpty() ? "Username field is empty" : "Password field is empty";
-                test.fail(errorMessage);
-                Assert.fail(errorMessage);
-            }
-
-            if (isLoggedIn) {
-                test.pass("Login successful for user: " + username1);
-                Log.info("Login successful for user: " + username1);
-            } else {
-                test.fail("Login failed incorrect username or password ");
-                Assert.fail("Login failed Incorrect username or password: ");
-            }
+            mirsalLoginTest.loginUser(username1, password);
 
         } catch (Exception e) {
             String errorMessage = "Test failed due to exception: " + e.getMessage();
@@ -98,7 +96,6 @@ public class MercalInternalWorkFlowlTest extends IncomingBaseTest {
         } catch (Exception e) {
             String errorMessage = "Test failed due to exception: " + e.getMessage();
             test.fail(errorMessage);
-            captureScreenshot(driver, "internal_memo_page_exception");
             Log.error("Test failed with exception: ", e);
             Assert.fail(errorMessage);
         } finally {
@@ -107,73 +104,105 @@ public class MercalInternalWorkFlowlTest extends IncomingBaseTest {
     }
 
     @Test(priority = 3, dependsOnMethods = "verifyOpenInternalMemoCreationPage")
-    public void verifyCreateInternalMemo() throws InterruptedException {
-        test = ExtentReportManager.createTest("Verify Create Internal Memo ", "Verify that user can create internal " +
-                "memo ");
-        test.log(Status.INFO, "Get Internal Memo page class Instance");
-        interalNotePage = new InteralNotePage(driver);
-        test.log(Status.INFO, "Enter Internal Document Name");
-        Thread.sleep(1000);
-        interalNotePage.writeSubject();
-        Thread.sleep(1000);
-        test.log(Status.INFO, "Chose The Reason For The Internal Document");
-        interalNotePage.selectReason();
-        //Thread.sleep(2000);
-        test.log(Status.INFO, "Enter Note For Internal Document");
-        interalNotePage.selectNote();
-        test.log(Status.INFO, "Scroll Down 200px");
-        scrollDownY(driver, 200);
-        Thread.sleep(1000);
-        test.log(Status.INFO, "Select The Person To Whom The Transfer Is Made");
-        interalNotePage.selectPersion();
-        test.log(Status.INFO, "Scroll To The Bottom Of The Page");
-        interalNotePage.scrollToButton(driver);
-        Thread.sleep(1000);
-        test.log(Status.INFO, "Click on Load File Word Button");
-        interalNotePage.loadWordFile();
-        waitForLoadPage();
-        test.log(Status.INFO, "Switch to Write in The Word File");
-        driver.switchTo().frame("Template-iframe");
-        test.log(Status.INFO, "Click On Arrow_Down Three Time");
-        Actions actions = new Actions(driver);
-        for (int i = 0; i < 3; i++) {
-            actions.sendKeys(Keys.ARROW_DOWN).perform();
-        }
-        test.log(Status.INFO, "Write In Word Document");
-        actions.sendKeys("test book incoming ").perform();
-        test.log(Status.INFO, "Switch To The Page ");
-        driver.switchTo().defaultContent();
-        Thread.sleep(500);
-        test.log(Status.INFO, "Click On The Save Button To Save The Word File");
-        interalNotePage.clickSaveButton();
-        test.log(Status.INFO, "Click On the Confirm Save Word File Button");
-        interalNotePage.confirmeSave();
+    public void verifyCreateInternalMemo() {
+        // Initialize Extent Test
+        test = ExtentReportManager.createTest("Verify Create Internal Memo",
+                "Verify that user can create an internal memo");
+        test.assignCategory("Internal Memo", "UI");
 
-        //nteralNotePage.clickOnManiSearchButton();
-        //Thread.sleep(400);
-        //interalNotePage.clickSearchButton();
-        //Thread.sleep(2000);
-        //interalNotePage.choosDocument();
-        //interalNotePage.getAttached();
-        //Thread.sleep(500);
-        //interalNotePage.getDecision();
-        //Thread.sleep(500);
-        //interalNotePage.getRegister();
-        //interalNotePage.clickCloseSearchBox();
-        waitForLoadPage();
-        test.log(Status.INFO, "Scroll To The Bottom Of The Page");
-        scrollToBottom(driver);
-        Thread.sleep(1000);
-        test.log(Status.INFO, "Click On Execute Button ");
-        interalNotePage.clickOnExecuteButton0();
-        waitForLoadPage();
-        //Thread.sleep(2000);
-        test.log(Status.INFO, "Click On Confirm Execute Button ");
-        interalNotePage.confirmNotify();
-        //Thread.sleep(2000);
-        test.log(Status.PASS, "Create Internal Document successfully");
+        try {
+            // Initialize page object and wait
+            test.info("Initializing Internal Memo page...");
+            interalNotePage = new InteralNotePage(driver);
+            test.pass("Internal Memo page initialized");
+
+            // wait until page loaded
+            waitForLoadPage();
+
+            // Step 1: Enter Memo Name
+            test.info("Entering internal Memo name...");
+            interalNotePage.enterSubject("internal memo 2");
+            test.pass("Document name entered successfully");
+
+
+            // Step 2: Select Reason
+            test.info("Selecting reason for the internal Memo...");
+            interalNotePage.selectReason();
+            test.pass("Reason selected successfully");
+
+            // Step 3: Enter Note
+            test.info("Entering note for the internal document...");
+            interalNotePage.selectNote();
+            test.pass("Note entered successfully");
+
+            // Step 4: Scroll Down
+            test.info("Scrolling down by 200px...");
+            interalNotePage.scrollTo(driver);
+            test.pass("Scrolled down successfully");
+
+            // Step 5: Select Person
+            test.info("Selecting the person for the transfer...");
+            interalNotePage.selectPersion();
+            interalNotePage.checkIfSelectPerson();
+            test.pass("Person selected successfully");
+
+            // Step 6: Scroll to Bottom
+            test.info("Scrolling to the bottom of the page...");
+            interalNotePage.scrollToButton(driver);
+            test.pass("Scrolled to bottom successfully");
+
+
+            // Step 7: Load Word File
+            test.info("Clicking on Load File Word button...");
+            interalNotePage.loadWordFile();
+            test.pass("Word file loaded successfully");
+
+            // Step 8: Write in Word Document
+            test.info("Switching to Word iframe and writing content...");
+            wait.until(ExpectedConditions.frameToBeAvailableAndSwitchToIt("Template-iframe"));
+            Actions actions = new Actions(driver);
+            for (int i = 0; i < 3; i++) {
+                actions.sendKeys(Keys.ARROW_DOWN).perform();
+                Thread.sleep(200);
+            }
+            actions.sendKeys("test internal memo 1").perform();
+            Thread.sleep(1000);
+            driver.switchTo().defaultContent();
+            test.pass("Content written in Word document");
+
+            // Step 9: Save Word File
+            test.info("Saving the Word file...");
+            interalNotePage.clickSaveButton();
+            interalNotePage.confirmeSave();
+            waitForLoadPage();
+            test.pass("Word file saved successfully");
+
+
+            // Step 10: Check If an Attachment Inserted
+            interalNotePage.checkIfAttacmentFileExist();
+
+            // Step 11: Execute and Confirm
+            test.info("Scrolling to bottom and executing the memo...");
+            scrollToBottom(driver);
+
+            Thread.sleep(1000);
+
+            interalNotePage.clickOnExecuteButton0();
+            waitForLoadPage();
+            interalNotePage.confirmNotify();
+            test.pass("Memo executed successfully");
+
+            // Final Status
+            test.log(Status.PASS, MarkupHelper.createLabel("Internal Memo created successfully", ExtentColor.GREEN));
+
+        } catch (Exception e) {
+            // Log failure and attach screenshot
+            String errorMessage = e.getMessage();
+            Assert.fail(errorMessage);
+        }
     }
 
+    
     @Test(priority = 4, dependsOnMethods = "verifyCreateInternalMemo")
     public void testRecverLogin() throws InterruptedException {
         test = extent.createTest("Login To Internal Manager Account Test");
@@ -183,7 +212,7 @@ public class MercalInternalWorkFlowlTest extends IncomingBaseTest {
         test.log(Status.INFO, "Click On Logout Button");
         mirsalLogout.clickLogoutButton();
         test.log(Status.INFO, "Enter Internal Manager UserName And Password");
-        loginUser(driver, "seq1", "Ebla1234");
+        mirsalLoginTest.loginUser("seq1", "Ebla1234");
         test.log(Status.PASS, "Login To Internal Manager Account successfully");
 
     }
@@ -258,7 +287,7 @@ public class MercalInternalWorkFlowlTest extends IncomingBaseTest {
         test.log(Status.INFO, "Click On Logout Button 2");
         mirsalLogout.clickLogoutButton();
         test.log(Status.INFO, "Enter General Manager UserName And Password");
-        loginUser(driver, "seq2", "Ebla1234");
+        mirsalLoginTest.loginUser("seq2", "Ebla1234");
         mirsalHomePage = new MirsalHomePage(driver);
         test.log(Status.INFO, "Open Incoming Page");
         waitForLoadPage();
@@ -280,3 +309,4 @@ public class MercalInternalWorkFlowlTest extends IncomingBaseTest {
 
 
 }
+

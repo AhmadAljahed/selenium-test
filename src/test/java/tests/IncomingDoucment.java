@@ -17,7 +17,6 @@ import utils.Log;
 import java.io.IOException;
 import java.time.Duration;
 
-import static pages.MirsalLoginPage.loginUser;
 import static utils.General.scrollDownY;
 
 @Listeners(TestListener.class)
@@ -28,7 +27,7 @@ public class IncomingDoucment extends IncomingBaseTest {
         Log.info("Starting login  valid test...");
         test = extent.createTest("Mercal Login Test", "Verify successful login with valid " + "credentials");
         test.info("enter and verify user information");
-        loginUser(driver, "seq1", "Ebla1234");
+        mirsalLoginTest.loginUser("seq1", "Ebla1234");
     }
 
     @Test(priority = 2, dependsOnMethods = "testLogin")
