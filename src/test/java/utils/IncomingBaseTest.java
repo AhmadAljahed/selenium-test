@@ -7,18 +7,14 @@ import com.aventstack.extentreports.Status;
 import com.aventstack.extentreports.markuputils.ExtentColor;
 import com.aventstack.extentreports.markuputils.MarkupHelper;
 import net.bytebuddy.implementation.bytecode.Throw;
-import org.openqa.selenium.By;
-import org.openqa.selenium.TimeoutException;
-import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.*;
 import org.openqa.selenium.devtools.v134.filesystem.model.Directory;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
+import org.testng.Assert;
 import org.testng.ITestResult;
 import org.testng.annotations.*;
-import pages.CreateInternalElctornicDocument;
-import pages.MirsalHomePage;
-import pages.MirsalLoginPage;
-import pages.RecivedMailPage;
+import pages.*;
 
 import java.io.IOException;
 import java.time.Duration;
@@ -38,6 +34,8 @@ public class IncomingBaseTest {
     protected MirsalHomePage mirsalHomePage;
     protected CreateInternalElctornicDocument createInternalElctornicDocument;
     protected RecivedMailPage recivedMailPage;
+
+    private MirsalLogout mirsalLogout;
 
     protected String testName;
     private static final String LOGIN_URL = "http://10.0.1.18:801/ui/sqwf/";
@@ -129,6 +127,43 @@ public class IncomingBaseTest {
     @AfterTest
     public void tearDown() {
         DriverFactory.quitDriver();
+    }
+
+    public void loginWithCredentials(String username, String password, String stepTitle, ExtentTest test) {
+
+        test.info(stepTitle + ": " + username);
+        test.log(Status.INFO, "Entering user credentials: " + username);
+        mirsalLoginTest.loginUser(username, password);
+        test.log(Status.PASS, "Login successful");
+
+    }
+
+    public void logout(String stepTitle, ExtentTest test) {
+        try {
+            test.info(stepTitle);
+            //initialise home page object page
+            mirsalHomePage = new MirsalHomePage(driver);
+
+            test.log(Status.INFO, "Click On Profile Page");
+            mirsalHomePage.clickOnProfileimage();
+
+            //initialise logout object page
+            mirsalLogout = new MirsalLogout(driver);
+
+            test.log(Status.INFO, "Click On Logout Button");
+            mirsalLogout.clickLogoutButton();
+            test.pass("Logout successfully");
+        } catch (NoSuchElementException e) {
+            throw new CustomTestException(
+                    "Logout failed: Element not found (profile image, logoutButton)", e);
+        } catch (TimeoutException e) {
+            throw new CustomTestException(
+                    "Logout failed: Timeout waiting for element to be clickable or visible", e);
+        } catch (ElementNotInteractableException e) {
+            throw new CustomTestException(
+                    "Logout failed: Element is not interactable (usernameField, passwordField, or loginButton)", e);
+        }
+
     }
 
 }

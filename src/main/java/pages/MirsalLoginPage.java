@@ -37,20 +37,25 @@ public class MirsalLoginPage extends BasePage {
     public void loginUser(String username, String password) {
         try {
             // Enter username
-            wait.until(ExpectedConditions.elementToBeClickable(usernameField));
             usernameField.clear();
             usernameField.sendKeys(username);
             String actualUsername = usernameField.getAttribute("value");
+            if (actualUsername == null || actualUsername.trim().isEmpty()) {
+                throw new CustomTestException("Failed to enter username: Username is Empty please Enter username ");
+            }
+            System.out.println(actualUsername);
             if (!actualUsername.equals(username)) {
                 throw new CustomTestException(
                         "Failed to enter username: Expected '" + username + "', but got '" + actualUsername + "'");
             }
 
             // Enter password
-            wait.until(ExpectedConditions.elementToBeClickable(passwordField));
             passwordField.clear();
             passwordField.sendKeys(password);
             String actualPassword = passwordField.getAttribute("value");
+            if (actualPassword == null || actualPassword.trim().isEmpty()) {
+                throw new CustomTestException("Failed to enter username: Username is Empty please Enter username ");
+            }
             if (!actualPassword.equals(password)) {
                 throw new CustomTestException(
                         "Failed to enter password: Expected '" + password + "', but got '" + actualPassword + "'");

@@ -11,17 +11,6 @@ import java.time.Duration;
 
 import static utils.General.waitAndClick;
 
-// Custom Exception Class
-class CustomTestException extends RuntimeException {
-    public CustomTestException(String message) {
-        super(message);
-    }
-
-    public CustomTestException(String message, Throwable cause) {
-        super(message, cause);
-    }
-}
-
 public class InteralNotePage extends BasePage {
     private WebDriverWait wait;
     private WebDriverWait wait5s; // For methods with 5-second waits

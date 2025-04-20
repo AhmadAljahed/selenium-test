@@ -79,7 +79,7 @@ public class MirsalHomePage extends BasePage {
     }
 
     public void clickOnProfileimage() {
-        profileImage.click();
+        waitAndClick(profileImage);
     }
 
     public void openExternalBook() {
