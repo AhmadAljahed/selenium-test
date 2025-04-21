@@ -11,8 +11,6 @@ import utils.IncomingBaseTest;
 import utils.Log;
 
 
-import static pages.TaskPage.scrollToBottom;
-
 public class MercalExternalWorkFlowlTest extends IncomingBaseTest {
     private ExtenralNotePage extenralNote;
     private MirsalLogout mirsalLogout;
@@ -76,7 +74,7 @@ public class MercalExternalWorkFlowlTest extends IncomingBaseTest {
         test.log(Status.INFO, "Select Direct-To Options");
         extenralNote.addDirection();
         test.log(Status.INFO, "Scroll To the Bottom Of The Page");
-        scrollToBottom(driver);
+        extenralNote.scrollToButton(driver);
         Thread.sleep(1000);
         test.log(Status.INFO, "Click on Word Document Button");
         extenralNote.clickOutGonigBtn();

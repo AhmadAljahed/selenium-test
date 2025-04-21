@@ -21,6 +21,7 @@ import java.time.Duration;
 import java.util.concurrent.TimeUnit;
 
 import static pages.BasePage.wait;
+import static pages.BasePage.waitForLoadPage;
 import static utils.ExtentReportManager.captureScreenshot;
 
 public class IncomingBaseTest {
@@ -140,12 +141,15 @@ public class IncomingBaseTest {
 
     public void logout(String stepTitle, ExtentTest test) {
         try {
+            waitForLoadPage();
+
             test.info(stepTitle);
             //initialise home page object page
             mirsalHomePage = new MirsalHomePage(driver);
 
             test.log(Status.INFO, "Click On Profile Page");
             mirsalHomePage.clickOnProfileimage();
+
 
             //initialise logout object page
             mirsalLogout = new MirsalLogout(driver);
